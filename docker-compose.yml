@@ -1,0 +1,30 @@
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: postgres_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password123
+      POSTGRES_DB: mgbd_liquibase
+    ports:
+      - "5433:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d mgbd_liquibase"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  liquibase:
+    image: liquibase/liquibase:4.25.0
+    container_name: liquibase_service
+    volumes:
+      - ./db/changelog:/liquibase/changelog
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - LIQUIBASE_COMMAND_URL=jdbc:postgresql://db:5432/mgbd_liquibase
+      - LIQUIBASE_COMMAND_USERNAME=postgres
+      - LIQUIBASE_COMMAND_PASSWORD=password123
+      - LIQUIBASE_COMMAND_CHANGELOG_FILE=db.changelog-master.yaml
+      - LIQUIBASE_SEARCH_PATH=/liquibase/changelog

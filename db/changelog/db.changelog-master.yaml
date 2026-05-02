@@ -1,0 +1,19 @@
+databaseChangeLog:
+  - include:
+      file: ddl/001-create-persona.sql
+  - include:
+      file: ddl/002-create-rol.sql
+  - include:
+      file: ddl/003-create-usuario.sql
+  - include:
+      file: ddl/004-create-producto.sql
+  - include:
+      file: ddl/005-create-factura.sql
+  - include:
+      file: ddl/006-create-detalle-factura.sql
+  - include:
+      file: dml/001-insert-data.sql
+  - include:
+      file: dml/002-update-data.sql
+  - include:
+      file: dml/003-delete-data.sql
